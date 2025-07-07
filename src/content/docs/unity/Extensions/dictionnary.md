@@ -3,47 +3,29 @@ title: Dictionary
 description: Extensions pour les dictionnaires
 ---
 
-Extension utilitaire pour simplifier les opérations courantes sur les dictionnaires.
-
-## Utilisation
-
-```cs
-using Tools;
-```
-
-## Méthodes disponibles
+## Méthodes
 
 ### GetRandomKey()
-Récupère une clé aléatoire du dictionnaire en utilisant le générateur de nombres aléatoires d'Unity.
 
-**Syntaxe :**
+Récupère une clé aléatoire.
+
 ```cs
 TKey GetRandomKey<TKey, TValue>(this Dictionary<TKey, TValue> dict)
 ```
 
-**Exemple :**
-```cs
-var weapons = new Dictionary<string, int>
-{
-    { "sword", 10 },
-    { "bow", 15 },
-    { "staff", 20 }
-};
+Exemple :
 
-string randomWeapon = weapons.GetRandomKey();
-// Retourne "sword", "bow" ou "staff" aléatoirement
+```cs
+var dict = new Dictionary<string, int> { { "a", 1 }, { "b", 2 } };
+string randomKey = dict.GetRandomKey();
 ```
 
-**Notes :**
-- Lève une `InvalidOperationException` si le dictionnaire est vide ou null
-- Utilise `UnityEngine.Random` pour la génération aléatoire
-
-## Code source
+## Code
 
 ```cs
 namespace Tools
 {
-    public static class DictionnaryExtension
+    public static class DictionaryExtension
     {
         public static TKey GetRandomKey<TKey, TValue>(this Dictionary<TKey, TValue> dict)
         {

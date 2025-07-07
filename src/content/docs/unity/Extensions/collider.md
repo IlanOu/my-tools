@@ -3,47 +3,37 @@ title: Colliders
 description: Extensions pour les colliders Unity
 ---
 
-Extension utilitaire pour simplifier les opérations courantes sur les colliders Unity.
-
-## Utilisation
-
-```cs
-using Tools;
-```
-
-## Méthodes disponibles
+## Méthodes
 
 ### IsIntersecting()
-Vérifie si deux colliders se chevauchent en comparant leurs bounds.
 
-**Syntaxe :**
+Vérifie si deux colliders se chevauchent.
+
 ```cs
 bool IsIntersecting(this Collider collider, Collider other)
 ```
 
-**Exemple :**
+Exemple :
+
 ```cs
-if (playerCollider.IsIntersecting(enemyCollider))
-{
-    // Collision détectée
-}
+if (playerCollider.IsIntersecting(enemyCollider)) { /* Collision */ }
 ```
 
 ### ResizeProportionnally()
-Redimensionne un collider en appliquant un facteur d'échelle proportionnel.
 
-**Syntaxe :**
+Redimensionne un collider proportionnellement.
+
 ```cs
 Collider ResizeProportionnally(this Collider collider, Vector3 scale)
 ```
 
-**Exemple :**
+Exemple :
+
 ```cs
-// Double la taille du collider
 collider.ResizeProportionnally(new Vector3(2f, 2f, 2f));
 ```
 
-## Code source
+## Code
 
 ```cs
 namespace Tools

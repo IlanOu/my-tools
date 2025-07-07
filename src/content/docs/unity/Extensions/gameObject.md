@@ -3,85 +3,66 @@ title: GameObject
 description: Extensions pour les GameObjects Unity
 ---
 
-Extension utilitaire pour simplifier les opérations courantes sur les GameObjects Unity.
-
-## Utilisation
-
-```cs
-using Tools;
-```
-
-## Méthodes disponibles
+## Méthodes
 
 ### GetOrAdd()
-Récupère un composant sur le GameObject, ou l'ajoute s'il n'existe pas.
 
-**Syntaxe :**
+Récupère ou ajoute un composant.
+
 ```cs
 T GetOrAdd<T>(this GameObject gameObject) where T : Component
 ```
 
-**Exemple :**
+Exemple :
+
 ```cs
-// S'assure qu'un Rigidbody existe sur l'objet
 Rigidbody rb = gameObject.GetOrAdd<Rigidbody>();
 ```
 
 ### OrNull()
-Convertit un objet Unity en null si il a été détruit (évite les "fake null" d'Unity).
 
-**Syntaxe :**
+Évite les "fake null" d'Unity.
+
 ```cs
 T OrNull<T>(this T obj) where T : Object
 ```
 
-**Exemple :**
+Exemple :
+
 ```cs
 GameObject obj = FindObjectOfType<GameObject>().OrNull();
-if (obj != null)
-{
-    // L'objet existe vraiment
-}
-```
-
-ou
-
-```cs
-GameObject obj = FindObjectOfType<GameObject>().OrNull()?.// L'objet existe vraiment;
+if (obj != null) { /* L'objet existe */ }
 ```
 
 ### DestroyChildren()
-Détruit tous les enfants directs du GameObject.
 
-**Syntaxe :**
+Détruit les enfants directs.
+
 ```cs
 void DestroyChildren(this GameObject gameObject)
 ```
 
-**Exemple :**
+Exemple :
+
 ```cs
-// Vide complètement un conteneur
 containerObject.DestroyChildren();
 ```
 
 ### Clone()
-Crée une copie du GameObject à une position et rotation spécifiées.
 
-**Syntaxe :**
+Crée une copie à une position et rotation spécifiées.
+
 ```cs
 GameObject Clone(this GameObject original, Vector3 position, Quaternion rotation, Transform parent = null)
 ```
 
-**Exemple :**
-```cs
-// Clone un objet à une nouvelle position
-GameObject copy = prefab.Clone(new Vector3(0, 5, 0), Quaternion.identity);
+Exemple :
 
-// Clone avec un parent spécifique
-GameObject child = prefab.Clone(Vector3.zero, Quaternion.identity, parentTransform);
+```cs
+GameObject copy = prefab.Clone(new Vector3(0, 5, 0), Quaternion.identity);
 ```
 
-## Code source
+## Code
 
 ```cs
 using UnityEngine;

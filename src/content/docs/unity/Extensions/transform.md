@@ -3,44 +3,25 @@ title: Transform
 description: Extensions pour les Transform Unity
 ---
 
-Extension utilitaire pour simplifier les opérations courantes sur les Transform Unity.
-
-## Utilisation
-
-```cs
-using Tools;
-```
-
-## Méthodes disponibles
+## Méthodes
 
 ### ResetLocal()
-Remet à zéro toutes les transformations locales (position, rotation, échelle) du Transform.
 
-**Syntaxe :**
+Remet à zéro les transformations locales.
+
 ```cs
 Transform ResetLocal(this Transform transform)
 ```
 
-**Exemple :**
-```cs
-// Remet un objet à sa position d'origine par rapport à son parent
-childObject.transform.ResetLocal();
+Exemple :
 
-// Chaînage possible grâce au retour du Transform
-GameObject newChild = new GameObject("Child");
+```cs
+childObject.transform.ResetLocal();
+// Chaînage possible
 newChild.transform.SetParent(parent).ResetLocal();
 ```
 
-**Valeurs appliquées :**
-- `localPosition` : `Vector3.zero`
-- `localRotation` : `Quaternion.identity`
-- `localScale` : `Vector3.one`
-
-**Notes :**
-- Retourne le Transform pour permettre le chaînage de méthodes
-- Affecte uniquement les transformations locales, pas les transformations globales
-
-## Code source
+## Code
 
 ```cs
 using UnityEngine;
