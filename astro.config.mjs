@@ -2,6 +2,7 @@
 import { defineConfig } from 'astro/config';
 import starlight from '@astrojs/starlight';
 import starlightAutoSidebar from 'starlight-auto-sidebar'
+import catppuccin from "@catppuccin/starlight";
 
 // https://astro.build/config
 export default defineConfig({
@@ -9,7 +10,10 @@ export default defineConfig({
 		starlight({
 			title: 'My Tools',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/ilanou/my-tools' }],
-			plugins: [starlightAutoSidebar()],
+			plugins: [catppuccin({
+				dark: { flavor: "mocha", accent: "sapphire" },
+				light: { flavor: "latte", accent: "sky" }
+			}), starlightAutoSidebar()],
 			sidebar: [
 				/* {
 					label: 'Guides',
