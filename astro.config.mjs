@@ -11,17 +11,16 @@ export default defineConfig({
 			title: 'My Tools',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/ilanou/my-tools' }],
 			plugins: [catppuccin({
-				dark: { flavor: "mocha", accent: "sapphire" },
+				dark: { flavor: "mocha", accent: "pink" },
 				light: { flavor: "latte", accent: "sky" }
 			}), starlightAutoSidebar()],
 			sidebar: [
-				/* {
+				{
 					label: 'Guides',
 					items: [
-						// Each item here is one entry in the navigation menu.
-						{ label: 'Example Guide', slug: 'guides/example' },
+						{ label: 'Accueil', slug: 'guides/main' },
 					],
-				}, */
+				},
 				{
 					label: 'Unity',
 					autogenerate: { directory: 'unity' },

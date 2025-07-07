@@ -1,5 +1,5 @@
 ---
-title: Colliders
+title: Collider
 description: Extensions pour les colliders Unity
 ---
 
