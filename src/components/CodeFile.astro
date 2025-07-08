@@ -1,0 +1,218 @@
+---
+import { Code } from '@astrojs/starlight/components';
+import fs from 'fs';
+import path from 'path';
+
+export interface Props {
+  filename: string;
+  language: string;
+  filepath: string; // Chemin complet depuis src/
+}
+
+const { filename, language, filepath } = Astro.props;
+const modalId = filename.replace(/[^a-zA-Z0-9]/g, '-');
+
+// Chemin absolu depuis la racine du projet
+const fullPath = path.join(process.cwd(), 'src', filepath);
+
+let code = '';
+try {
+  code = fs.readFileSync(fullPath, 'utf-8');
+} catch (error) {
+  console.error(`Fichier non trouvé: ${fullPath}`);
+  code = `// Erreur: Fichier ${filepath} non trouvé`;
+}
+---
+
+<button class="code-file-btn" data-modal={modalId}>
+  <div>
+    <div class="filename">{filename}</div>
+    <div class="language">{language}</div>
+  </div>
+  <svg width="16" height="16" viewBox="0 0 16 16">
+    <path d="M8 4l4 4-4 4-1.5-1.5L9 8 6.5 5.5z"></path>
+  </svg>
+</button>
+
+<div class="modal" id={modalId}>
+  <div class="modal-bg"></div>
+  <div class="modal-content">
+    <header>
+      <h3>{filename}</h3>
+    </header>
+    <div class="code-container">
+      <Code code={code} lang={language} />
+    </div>
+  </div>
+</div>
+
+<style>
+  .code-file-btn {
+    width: 100%;
+    background: var(--sl-color-gray-6);
+    border: 1px solid var(--sl-color-gray-5);
+    border-radius: 8px;
+    padding: 1rem;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: all 0.2s;
+  }
+
+  .code-file-btn:hover {
+    background: var(--sl-color-gray-5);
+    border-color: var(--sl-color-accent);
+  }
+
+  .filename {
+    font-family: var(--sl-font-mono);
+    font-weight: 600;
+    color: var(--sl-color-white);
+  }
+
+  .language {
+    font-size: 0.875rem;
+    color: var(--sl-color-gray-3);
+    background: var(--sl-color-gray-5);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-family: var(--sl-font-mono);
+    margin-top: 0.25rem;
+  }
+
+  .modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+  }
+
+  .modal.active {
+    display: block;
+  }
+
+  .modal-bg {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(4px);
+    cursor: pointer;
+  }
+
+  .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: var(--sl-color-gray-6);
+    border-radius: 12px;
+    width: 90vw;
+    max-width: 1200px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    border: 1px solid var(--sl-color-gray-5);
+    overflow: hidden;
+  }
+
+  header {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--sl-color-gray-5);
+    background: var(--sl-color-gray-6);
+  }
+
+  h3 {
+    margin: 0;
+    font-family: var(--sl-font-mono);
+    color: var(--sl-color-white);
+  }
+
+  .code-container {
+    flex: 1;
+    overflow: auto;
+    background: var(--sl-color-gray-7);
+  }
+
+  /* Override du style du composant Code de Starlight */
+  .code-container :global(pre) {
+    margin: 0 !important;
+    border-radius: 0 !important;
+    border: none !important;
+  }
+
+  @media (max-width: 768px) {
+    .modal-content {
+      width: 95vw;
+      max-height: 90vh;
+    }
+
+    header {
+      padding: 1rem;
+    }
+  }
+</style>
+
+<script>
+  document.addEventListener("click", (e) => {
+    // Ouvrir modal
+    if (e.target.closest(".code-file-btn")) {
+      const btn = e.target.closest(".code-file-btn");
+      const modal = document.getElementById(btn.dataset.modal);
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
+
+      // Cache sidebar droite
+      document
+        .querySelectorAll(".right-sidebar, .right-sidebar-container")
+        .forEach((el) => {
+          el.style.display = "none";
+        });
+    }
+
+    // Fermer modal (clic sur le background)
+    if (e.target.closest(".modal-bg")) {
+      const modal = e.target.closest(".modal");
+      modal.classList.remove("active");
+      document.body.style.overflow = "auto";
+
+      // Remet sidebar droite
+      document
+        .querySelectorAll(".right-sidebar, .right-sidebar-container")
+        .forEach((el) => {
+          el.style.display = "";
+        });
+    }
+  });
+
+  // Gestion des raccourcis clavier
+  document.addEventListener("keydown", (e) => {
+    const activeModal = document.querySelector(".modal.active");
+
+    if (activeModal) {
+      // Ctrl+A : sélectionner tout le code
+      if (e.ctrlKey && e.key === "a") {
+        e.preventDefault();
+        const codeElement = activeModal.querySelector("code");
+        if (codeElement) {
+          const range = document.createRange();
+          range.selectNodeContents(codeElement);
+          const selection = window.getSelection();
+          selection.removeAllRanges();
+          selection.addRange(range);
+        }
+      }
+
+      // Escape : fermer
+      if (e.key === "Escape") {
+        activeModal.classList.remove("active");
+        document.body.style.overflow = "auto";
+        document
+          .querySelectorAll(".right-sidebar, .right-sidebar-container")
+          .forEach((el) => {
+            el.style.display = "";
+          });
+      }
+    }
+  });
+</script>

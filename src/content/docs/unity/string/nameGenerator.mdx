@@ -1,0 +1,103 @@
+---
+title: Générateur de noms
+description: Générateur de noms procéduraux
+---
+
+import CodeFile from '@components/CodeFile.astro';
+
+Générateur de noms stylés pour tes persos, villes, objets, etc.
+
+```cs
+using Features.Name;
+```
+
+## Generate()
+Génère un nom selon un style donné.
+
+```cs
+// Nom fantasy basique
+string name = NameGenerator.Generate();
+// → "Aelric", "Belvaca", "Galtor", "Thrandil"
+
+// Nom sci-fi entre 5 et 8 lettres
+string scifiName = NameGenerator.Generate("SciFi", 5, 8);
+// → "Bex", "Neokr", "Xalor", "Trvnex"
+
+// Nom humain avec seed fixe (reproductible)
+string humanName = NameGenerator.Generate("Human", seed: 42);
+// → Toujours le même nom avec cette seed
+```
+
+**Styles dispo :** `Fantasy`, `SciFi`, `Human`
+
+## GenerateMultiple()
+Génère plusieurs noms d'un coup (tous uniques).
+
+```cs
+// 5 noms fantasy
+string[] names = NameGenerator.GenerateMultiple(5);
+// → Tableau de 5 noms uniques style fantasy
+
+// 10 noms sci-fi courts
+string[] shortNames = NameGenerator.GenerateMultiple(10, "SciFi", 3, 6);
+// → 10 noms sci-fi de 3-6 caractères
+```
+
+## MergeNames()
+Fusionne deux noms pour créer un hybride.
+
+```cs
+string hybrid = NameGenerator.MergeNames("Aragorn", "Legolas");
+// → Coupe "Aragorn" vers le milieu + début de "Legolas"
+// Possible : "Aralas", "Araglas", "Araegas"
+
+string hybrid2 = NameGenerator.MergeNames("Gandalf", "Saruman");
+// → "Ganuman", "Gandman", "Gansaruman"
+```
+
+## GenerateWithMeaning()
+Génère un nom basé sur une signification (expérimental).
+
+```cs
+// Nom lié à la force/puissance (lettres 'a' pour strength)
+string strongName = NameGenerator.GenerateWithMeaning("strength");
+// → Nom fantasy normal mais avec plus de 'a'
+
+// Nom lié à la magie (lettres 'm' pour magic)
+string magicName = NameGenerator.GenerateWithMeaning("magic", "Fantasy");
+// → Nom fantasy avec plus de 'm'
+```
+
+## Trucs utiles
+
+```cs
+// Check si un nom existe déjà
+bool exists = NameGenerator.NameExists("TestName", "Fantasy");
+
+// Vider le cache (pour regénérer des noms identiques)
+NameGenerator.ClearCache("Fantasy");
+
+// Voir tous les noms générés
+string[] allNames = NameGenerator.GetGeneratedNames("Fantasy");
+
+// Créer ton propre style
+NameGenerator.AddStyle("Orc", 
+    new[] { "GrVCk", "UrCVC", "CVCash" }, 
+    "bcdfgklmnprstvz", 
+    "aou");
+// → Noms comme "Grukk", "Urgan", "Brogash"
+```
+
+## Patterns analysés
+
+**Fantasy :** Utilise des patterns comme "CVCVCa", "ElCVC", "AelVC" avec préfixes elfiques  
+**SciFi :** Patterns "CVx", "NeoCV", "TrVnCV" avec consonnes X/Z pour un son futuriste  
+**Human :** Patterns "CVCVn", "CVCey", "JVCob" pour des sonorités plus familières
+
+## Code
+
+<CodeFile 
+  filename="NameGenerator.cs"
+  language="csharp"
+  filepath="content/docs/unity/string/NameGenerator.cs"
+/>

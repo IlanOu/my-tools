@@ -10,6 +10,7 @@ export default defineConfig({
 		starlight({
 			title: 'My Tools',
 			social: [{ icon: 'github', label: 'GitHub', href: 'https://github.com/ilanou/my-tools' }],
+			// favicon: 'public/favicon.ico',
 			plugins: [catppuccin({
 				dark: { flavor: "mocha", accent: "pink" },
 				light: { flavor: "latte", accent: "sky" }
