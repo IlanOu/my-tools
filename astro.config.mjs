@@ -23,8 +23,8 @@ export default defineConfig({
 					],
 				},
 				{
-					label: 'Unity',
-					autogenerate: { directory: 'unity' },
+					label: 'Games',
+					autogenerate: { directory: 'games' },
 				},
 			],
 		}),
